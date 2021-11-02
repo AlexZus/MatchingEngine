@@ -1,0 +1,10 @@
+<map id="OrderBooksProcessor::process" name="OrderBooksProcessor::process">
+<area shape="rect" id="node1" title=" " alt="" coords="5,104,156,145"/>
+<area shape="rect" id="node2" href="$class_order_books_container.html#a2072ff2ab70cd1c16b2ccfe8e4cb548d" title=" " alt="" coords="206,71,353,112"/>
+<area shape="rect" id="node8" href="$class_order_books_processor.html#a50cf15409b4a0b4f164baf342e6f23ed" title=" " alt="" coords="204,136,355,177"/>
+<area shape="rect" id="node3" href="$class_order_books_container.html#aa7c99cc2cd3e63bd4c35aa49f7e241cd" title=" " alt="" coords="403,5,549,47"/>
+<area shape="rect" id="node4" href="$class_order_books_container.html#ad36785cc007fe32e92c7136630a04640" title=" " alt="" coords="403,71,549,112"/>
+<area shape="rect" id="node5" href="$class_order_books_container.html#a6372e3550c084c2682dd2fa763814b53" title=" " alt="" coords="403,136,549,177"/>
+<area shape="rect" id="node6" href="$struct_order_ids.html#a9ca6c1d3c319c32bd07e17ac0483ef60" title=" " alt="" coords="597,143,797,170"/>
+<area shape="rect" id="node7" href="$struct_unique_order_id.html#a120da8be846c598e397455c37ec3a846" title=" " alt="" coords="845,136,1036,177"/>
+</map>

@@ -1,0 +1,223 @@
+#Format new order:
+# N, user(int),symbol(string),price(int),qty(int),side(char B or S),userOrderId(int)
+#
+#Format cancel order:
+# C, user(int),userOrderId(int)
+#
+#Format flush order book:
+# F
+
+# Notes:
+# * Price is 0 for market order, <>0 for limit order
+# * TOB = Top Of Book, highest bid, lowest offer
+# * Between scenarios flush order books
+
+#scenario1, balanced book
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102 
+
+# hit book on each side, generate trades, TOB = 9/12
+N, 1, IBM, 11, 100, B, 3
+N, 2, IBM, 10, 100, S, 103
+
+# replenish book on each side, TOB = 10/11
+N, 1, IBM, 10, 100, B, 4
+N, 2, IBM, 11, 100, S, 104
+F
+
+#scenario2, shallow bid
+
+# build book, shallow bid, TOB = 10/11
+N, 1, AAPL, 10, 100, B, 1
+N, 1, AAPL, 12, 100, S, 2
+N, 2, AAPL, 11, 100, S, 102
+
+# hit bid, generate trade, TOB = -/11
+N, 2, AAPL, 10, 100, S, 103
+
+# replenish bid, TOB = 10/11
+N, 1, AAPL, 10, 100, B, 3
+F
+
+#scenario3, shallow ask
+
+# build book, shallow ask, TOB = 10/11
+N, 1, VAL, 10, 100, B, 1
+N, 2, VAL, 9, 100, B, 101
+N, 2, VAL, 11, 100, S, 102
+
+# hit ask, generate trade, TOB = 10/-
+N, 1, VAL, 11, 100, B, 2
+
+# replenish ask, TOB = 10/11
+N, 2, VAL, 11, 100, S, 103
+F
+
+#scenario4, balanced book, limit below best bid
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# limit below best bid, generate trade, TOB = 9/11
+N, 2, IBM, 9, 100, S, 103
+F
+
+#scenario5, balanced book, limit above best ask
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# limit above best ask, generate trade, TOB = 10/12
+N, 1, IBM, 12, 100, B, 103
+F
+
+#scenario6, balanced book, market sell
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# market sell, generate trade, TOB = 9/11
+N, 2, IBM, 0, 100, S, 103
+F
+
+#scenario7, balanced book, market buy
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# market buy, generate trade, TOB = 10/12
+N, 1, IBM, 0, 100, B, 3
+F
+
+#scenario8, tighten spread through new limit orders
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 16, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 15, 100, S, 102
+
+# new bid, ask TOB = 11/14
+N, 2, IBM, 11, 100, B, 103
+N, 1, IBM, 14, 100, S, 3
+F
+
+#scenario9, balanced book, market sell partial
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# market sell, generate partial trade, TOB = 10/11
+N, 2, IBM, 0, 20, S, 103
+F
+
+#scenario10, balanced book, market buy partial
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# market buy, generate partial trade, TOB = 10/11
+N, 1, IBM, 0, 20, B, 3
+F
+
+#scenario11, balanced book, limit sell partial
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# limit sell, generate partial trade, TOB = 10/11
+N, 2, IBM, 10, 20, S, 103
+F
+
+#scenario12, balanced book, limit buy partial
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# limit buy, generate partial trade, TOB = 10/11
+N, 1, IBM, 11, 20, B, 3
+F
+
+#scenario13, balanced book multiple orders at best bid offer
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+N, 2, IBM, 10, 50, B, 103
+N, 1, IBM, 11, 50, S, 3
+
+# market buy and sell, generate trades, TOB = 10/11
+N, 1, IBM, 11, 100, B, 4
+N, 2, IBM, 10, 100, S, 104
+F
+
+#scenario14, balanced book, cancel best bid and offer
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# limit buy, generate partial trade, TOB = 9/12
+C, 1, 1
+C, 2, 102
+F
+
+#scenario15, balanced book, cancel behind best bid and offer
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# cancel orders, TOB = 10/11
+C, 1, 2
+C, 2, 101
+F
+
+#scenario16, balanced book, cancel all bids
+
+# build book, TOB = 10/11
+N, 1, IBM, 10, 100, B, 1
+N, 1, IBM, 12, 100, S, 2
+N, 2, IBM, 9, 100, B, 101
+N, 2, IBM, 11, 100, S, 102
+
+# cancel all bids, TOB = -/11
+C, 1, 1
+C, 2, 101
+F
+
+
